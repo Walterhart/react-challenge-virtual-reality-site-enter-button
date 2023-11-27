@@ -30,25 +30,36 @@ export default function App() {
 			            |--------------------|----------------------------------|
 			            |  entranceTime      |	new date object                 |	
                         |--------------------|----------------------------------|
-			            |  clickCoordinates  |	obect containing click event's  |
+			            |  clickCoordinates  |	object containing click event's |
                         |                    |  offsetX and offsetY values      |	
 			            ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
                         		         
         2. If you complete these tasks correctly, you should get a button with some retro, glitchy 
            visual effects, and you should get a correctly rendered message in the console!
  */
-  
-  return (
-    <div>        
+   
+     const collectUserData= (event) =>{
+         const {offsetX, offsetY} = event.nativeEvent
+         setUserData(prev =>({
+             hasEntered : true,
+             pageLoadTime: prev.pageLoadTime, 
+             entranceTime : new Date(),
+             clickCoordinates : {offsetX, offsetY}
+         }))
+       
+     }
+
+     return (
+    	<div>
+    		<button
+          onClick={collectUserData}
+    			disabled={userData.hasEntered}
+    			className={userData.hasEntered ? "activated" : "unactivated"}
+    		>
+    			{userData.hasEntered ? "Connecting" : "Enter"}
+    		</button>
     
-            <button 
-                disabled={userData.hasEntered }
-                className={userData.hasEntered ? "activated" : "unactivated"}
-            >
-                {userData.hasEntered ? "Connecting" : "Enter"}
-            </button>      
-      
-      <WelcomeMessage userData={userData} />
-    </div>
-  )
+    		<WelcomeMessage userData={userData} />
+    	</div>
+    )
 }
